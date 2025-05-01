@@ -58,16 +58,18 @@ class LoginSerializer(serializers.Serializer):
     def get_auth_user_using_allauth(self, username, email, password):
         from allauth.account import app_settings as allauth_account_settings
 
-        # Authentication through email
-        if allauth_account_settings.AUTHENTICATION_METHOD == allauth_account_settings.AuthenticationMethod.EMAIL:
-            return self._validate_email(email, password)
-
-        # Authentication through username
-        if allauth_account_settings.AUTHENTICATION_METHOD == allauth_account_settings.AuthenticationMethod.USERNAME:
-            return self._validate_username(username, password)
-
         # Authentication through either username or email
-        return self._validate_username_email(username, email, password)
+        if  allauth_account_settings.AuthenticationMethod.EMAIL in allauth_account_settings.LOGIN_METHODS \
+            and allauth_account_settings.AuthenticationMethod.USERNAME in allauth_account_settings.LOGIN_METHODS:
+            return self._validate_username_email(username, email, password)
+        # Authentication through email
+        elif allauth_account_settings.AuthenticationMethod.EMAIL in allauth_account_settings.LOGIN_METHODS:
+            return self._validate_email(email, password)
+        # Authentication through username
+        elif allauth_account_settings.AUTHENTICATION_METHOD == allauth_account_settings.AuthenticationMethod.USERNAME:
+            return self._validate_username(username, password)
+        else:
+            raise exceptions.ValidationError(_('No login method configured'))
 
     def get_auth_user_using_orm(self, username, email, password):
         if email:
