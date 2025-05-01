@@ -223,9 +223,9 @@ class SocialConnectSerializer(SocialConnectMixin, SocialLoginSerializer):
 
 class RegisterSerializer(serializers.Serializer):
     email_conf = allauth_account_settings.SIGNUP_FIELDS.get("email")
-    email_required = email_conf and email_conf["required"]
+    email_required = bool(email_conf and email_conf["required"])
     username_conf = allauth_account_settings.SIGNUP_FIELDS.get("username")
-    username_required = username_conf and username_conf["required"]
+    username_required = bool(username_conf and username_conf["required"])
     
     username = serializers.CharField(
         max_length=get_username_max_length(),
