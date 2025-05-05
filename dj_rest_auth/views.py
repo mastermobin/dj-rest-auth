@@ -88,7 +88,7 @@ class LoginView(GenericAPIView):
 
             data = {
                 'user': self.user,
-                'access': self.access_token,
+                'token': self.access_token,
             }
 
             if not auth_httponly:
