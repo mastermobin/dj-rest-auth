@@ -117,7 +117,7 @@ class SocialLoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     _('Define client_class in view'),
                 )
-ß
+
             provider = adapter.get_provider()
             client = self.client_class(
                 request,
