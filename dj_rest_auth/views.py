@@ -211,7 +211,7 @@ class LogoutView(APIView):
                         response.data = {'detail': _('An error has occurred.')}
                         response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-            elif not cookie_name:
+            elif not cookie_name and not api_settings.SESSION_LOGIN:
                 message = _(
                     'Neither cookies or blacklist are enabled, so the token '
                     'has not been deleted server side. Please make sure the token is deleted client side.',
